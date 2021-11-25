@@ -1,0 +1,63 @@
+
+body {
+  text-align: center;
+}
+
+.navbar {
+  backgroud-color:#EF45A8;
+  padding: 0 0 4.5rem;
+}
+.nav-item {
+  padding: 0 18px;
+}
+.container-fluid{
+    padding: 3% 15%;
+}
+
+.col-lg-6{
+    position: center;
+}
+
+.white-section {
+  background-color: #fff;
+  text-align: center;
+}
+
+.form-label{
+    font-family: 'Notable';
+    font-size: 2rem;
+    line-height: 1.5;
+    font-weight: 900;
+    color: #FFFDD0;
+}
+
+#title {
+  background-color: #f5ffdc;
+  color: #000000;
+  text-align: left;
+}
+
+#title .container-fluid {
+  padding: 3% 15% 7%;
+}
+
+h1 {
+    font-family: 'Notable';
+    font-size: 3rem;
+    line-height: 1.5;
+    font-weight: 900;
+    color: #eed799;
+}
+
+@media (max-width: 1200px) {
+
+  #title {
+    text-align: center;
+  }
+
+  .title-image {
+    position: static;
+    transform: rotate(0);
+  }
+
+}
