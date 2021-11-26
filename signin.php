@@ -15,24 +15,27 @@
 
 
 <section id="sign-in">
-    <form action="action_page.php" method="post">
-        <h1>Sign In</h1>
-        <p>Please enter your account details as specified below:</p>
-        <hr>
-        <div class="imgcontainer">
-        </div>
+    <div class="container-fluid">
+        <form action="action_page.php" method="post">
+            <h1>Sign In</h1>
+            <p>Please enter your account details as specified below:</p>
+            <hr>
+            <div class="imgcontainer">
+            </div>
 
-        <div class="container">
-        <label for="uname"><b>SIN Number</b></label>
-        <input type="text" placeholder="Enter SIN Number" name="uname" required>
+            <div class="container">
+            <label for="uname"><b>SIN Number</b></label>
+            <input type="text" placeholder="Enter SIN Number" name="uname" required>
 
-        <label for="psw"><b>Enter Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
+            <label for="psw"><b>Enter Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
 
-        <button type="submit">Login</button>
-        </div>
-
-    </form>
+            <button onclick="location.href='../CPSC471FinalProject/i-volunt/home.php'" type="submit">Volunteer Login</button>
+            <button onclick="location.href='../CPSC471FinalProject/coordinator/home.php'" type="submit">Coordinator Login</button>
+            <button onclick="location.href='../CPSC471FinalProject/p-volunt/home.php'" type="submit">Potential Volunteer Login</button>
+            </div>
+        </form>
+    </div>
 
 </section>
 
