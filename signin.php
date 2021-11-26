@@ -30,9 +30,7 @@
             <label for="psw"><b>Enter Password</b></label>
             <input type="password" placeholder="Enter Password" name="psw" required>
 
-            <button onclick="location.href='../CPSC471FinalProject/i-volunt/home.php'" type="submit">Volunteer Login</button>
-            <button onclick="location.href='../CPSC471FinalProject/coordinator/home.php'" type="submit">Coordinator Login</button>
-            <button onclick="location.href='../CPSC471FinalProject/p-volunt/home.php'" type="submit">Potential Volunteer Login</button>
+            <button onclick="location.href='../CPSC471FinalProject/i-volunt/home.php'" type="submit">Login</button>
             </div>
         </form>
     </div>
