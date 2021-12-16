@@ -42,7 +42,13 @@
                 <br><br>
                 <a href="signin.php" class="btn btn-Danger btn-lg btn-block" role="button"></i> Please Sign In</a>
                 <br><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
                 <h1>Or Sign Up:</h1>
+            </div>
+            <div class="col-lg-8">
                 <a href="i-volunt/signup.php" class="btn btn-warning btn-sm" role="button"> </i> Internal Volunteer </a>
                 <a href="e-volunt/signup.php" class="btn btn-warning btn-sm" role="button"> </i>  External Volunteer </a>
                 <a href="p-volunt/signup.php" class="btn btn-warning btn-sm" role="button"> </i>  Prospective Volunteer </a>
