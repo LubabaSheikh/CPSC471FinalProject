@@ -1,3 +1,11 @@
+<?php
+$con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
+
+if(!$con) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +24,7 @@
 
 <section id="sign-up">
     <div class="container-fluid">
-        <form action="signUP.php" style="border:1px solid #ccc">
+        <form name="Signup" action="" method="post">
           <div class="container">
             <h1>External Volunteer Sign Up Page</h1>
             <p>Please fill in this form to create an account.</p>
@@ -41,30 +49,34 @@
             <input type="text" placeholder="they/them" name="pronouns" required>
             <br>
             <label for="Bday"><b>Birth Date</b></label>
-            <input type="text" placeholder="MM/DD/YY" name="Bday" required>
+            <input type="text" placeholder="MM/DD/YYYY" name="Bday" required>
             <br>
             <label for="affilComp"><b>Affiliated Company</b></label>
             <input type="text" placeholder="Church of Bingus" name="affilComp" required>
             <br>
-            <label for="Flag"><b>Pet Visitation or Spirituality</b></label>
-            <input type="text" placeholder="Pet or Spirit???" name="Flag" required>
+            <label for="type-ex"> Type of External Volunteer:</label>
+                <select id="typeEx" name="typeEx">
+                  <option value="none" selected disabled hidden>Select a Role</option>
+                  <option value="pet">Pet Visitation</option>
+                  <option value="spirit">Spirituality Care</option>
+                </select>
             <br>
             <label for="petName"><b>Pet Name</b></label>
-            <input type="text" placeholder="N/A" name="petName" required>
+            <input type="text" placeholder="N/A if Spirituality Care" name="petName" required>
             <br>
             <label for="petType"><b>Pet Type</b></label>
-            <input type="text" placeholder="Dog" name="petType" required>
+            <input type="text" placeholder="N/A if Spirituality Care" name="petType" required>
             <br>
             <label for="spirituality"><b>Your Faith</b></label>
-            <input type="text" placeholder="N/A" name="spirituality" required>
+            <input type="text" placeholder="N/A if Pet Visitation" name="spirituality" required>
             <br>
 
             <label for="psw"><b>Enter your password</b></label>
             <input type="password" placeholder="Password" name="psw" required>
 
             <div class="clearfix">
-              <button href="../index.php" type="button" class="homeBTN">Back</button>
-              <button type="submit" class="signupbtn">Sign Up</button>
+                <a href="../index.php" class="btn btn-warning btn-sm" role="button"> </i> Back </a>
+                <input type="submit" name="signupbtn" value="Sign up">
             </div>
           </div>
         </form>
@@ -72,6 +84,52 @@
     <br><br><br>
 </section>
 
+<?php
+//
+// Processing form data when form is submitted
+ if(isset($_POST["signupbtn"])) {
+    // Validate username
+
+    //unset($error);
+    $username = $_POST["sinNum"];
+    $password = $_POST["psw"];
+    $fName = $_POST["fname"];
+    $mInit = $_POST["minit"];
+    $lName = $_POST["lname"];
+    $gender = $_POST["gender"];
+    $pronouns = $_POST["pronouns"];
+    $bday = date('Y-m-d',strtotime($_POST['Bday']));
+    $company = $_POST["affilComp"];
+    $petName = $_POST["petName"];
+    $petType = $_POST["petType"];
+    $spirit = $_POST["spirituality"];
+
+    $query = "SELECT * FROM person WHERE SIN = " . $username;
+    $checkSIN = mysqli_prepare($con,$query);
+    mysqli_stmt_execute($checkSIN);
+    $getResult = mysqli_stmt_get_result($checkSIN);
+
+    while ($row = mysqli_fetch_assoc($getResult)) {
+        echo '<script>alert("This SIN already exists in our system")</script>';
+    }
+
+echo "heree";
+    if(empty($username_err) && empty($password_err)){
+        mysqli_query($con, "INSERT INTO person VALUES ('$username', '$password', '$fName', '$mInit', '$lName', '$bday', '$gender', '$pronouns', '0', '0')")  or die ( mysql_error() );
+        
+        if($_POST['typeEx'] == 'pet'){
+            mysqli_query($con, "INSERT INTO externalvolunteer VALUES ('$username', 'Pet Visitation', '$company' , '1', '0', '$petName', '$petType', NULL)")  or die ( mysql_error() );
+        }
+        else if($_POST['typeEx'] == 'spirit'){
+            mysqli_query($con, "INSERT INTO externalvolunteer VALUES ('$username', 'Spirituality Care', '$company', '0', '1', NULL, NULL, '$spirit')")  or die ( mysql_error() );
+        }
+    }
+    mysqli_close($con);
+    header('Location: ../signin.php');
+
+}
+
+?>
 
   <!-- Footer -->
     <footer class="white-section" id="footer">

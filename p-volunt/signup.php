@@ -1,3 +1,11 @@
+<?php
+$con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
+
+if(!$con) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +24,7 @@
 
 <section id="sign-up">
     <div class="container-fluid">
-        <form action="signUP.php" style="border:1px solid #ccc">
+        <form name="Signup" action="" method="post">
           <div class="container">
             <h1>Prospective Volunteer Sign Up Page</h1>
             <p>Please fill in this form to create an account.</p>
@@ -26,7 +34,7 @@
             <input type="text" placeholder="First" name="fname" required>
             <br>
             <label for="minit"><b>Middle Initial</b></label>
-            <input type="text" placeholder="N/A" name="minit" required>
+            <input type="text" placeholder="can leave blank" name="minit" required>
             <br>
             <label for="lname"><b>Last Name</b></label>
             <input type="text" placeholder="Last" name="lname" required>
@@ -35,21 +43,20 @@
             <input type="text" placeholder="Enter SIN" name="sinNum" required>
             <br>
             <label for="gender"><b>Gender</b></label>
-            <input type="text" placeholder="N/A" name="gender" required>
+            <input type="text" placeholder="any" name="gender" required>
             <br>
             <label for="pronouns"><b>Pronouns</b></label>
             <input type="text" placeholder="they/them" name="pronouns" required>
             <br>
             <label for="Bday"><b>Birth Date</b></label>
-            <input type="text" placeholder="MM/DD/YY" name="Bday" required>
+            <input type="text" placeholder="MM/DD/YYYY" name="Bday" required>
             <br>
-
             <label for="psw"><b>Enter your password</b></label>
             <input type="password" placeholder="Password" name="psw" required>
 
             <div class="clearfix">
-              <button href="../index.php" type="button" class="homeBTN">Back</button>
-              <button type="submit" class="signupbtn">Sign Up</button>
+              <a href="../index.php" class="btn btn-warning btn-sm" role="button"> </i> Back </a>
+              <input type="submit" name="signupbtn" value="Sign up">
             </div>
           </div>
         </form>
@@ -57,6 +64,43 @@
     <br><br><br>
 </section>
 
+
+<?php
+//
+// Processing form data when form is submitted
+ if(isset($_POST["signupbtn"])) {
+    // Validate username
+
+    //unset($error);
+    $username = $_POST["sinNum"];
+    $password = $_POST["psw"];
+    $fName = $_POST["fname"];
+    $mInit = $_POST["minit"];
+    $lName = $_POST["lname"];
+    $gender = $_POST["gender"];
+    $pronouns = $_POST["pronouns"];
+    $bday = date('Y-m-d',strtotime($_POST['Bday']));
+
+    $query = "SELECT * FROM person WHERE SIN = " . $username;
+    $checkSIN = mysqli_prepare($con,$query);
+    mysqli_stmt_execute($checkSIN);
+    $getResult = mysqli_stmt_get_result($checkSIN);
+
+    while ($row = mysqli_fetch_assoc($getResult)) {
+        echo '<script>alert("This SIN already exists in our system")</script>';
+    }
+
+
+    if(empty($username_err) && empty($password_err)){
+        mysqli_query($con, "INSERT INTO person VALUES ('$username', '$password', '$fName', '$mInit', '$lName', '$bday', '$gender', '$pronouns', '0', '0')")  or die ( mysql_error() );
+        mysqli_query($con, "INSERT INTO potentialvolunteer VALUES ('$username', '123123123', '0', '')")  or die ( mysql_error() );
+    }
+    mysqli_close($con);
+    header('Location: ../signin.php');
+
+}
+
+?>
 
   <!-- Footer -->
     <footer class="white-section" id="footer">
@@ -67,4 +111,7 @@
     </footer>
 
 
+
+
 </body>
+<html>

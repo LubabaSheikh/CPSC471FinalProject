@@ -41,7 +41,7 @@ if(!$con) {
                 <select id="role" name="role">
                   <option value="none" selected disabled hidden>Select a Role</option>
                   <option value="volunteer">Internal Volunteer</option>
-                  <option value="potentialvolunteer">Potential Volunteer</option>
+                  <option value="potentialvolunteer">Prospective Volunteer</option>
                   <option value="externalvolunteer">External Volunteer</option>
                   <option value="coordinator">Coordinator</option>
                 </select>
@@ -113,8 +113,11 @@ if(!$con) {
          }
       }
 
+     echo '<script>alert("Account was not found, try again")</script>';
+
      }
 
+     mysqli_close($link);
      ?>
 
      <!-- Footer -->
