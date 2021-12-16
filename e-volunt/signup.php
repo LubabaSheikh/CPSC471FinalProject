@@ -14,6 +14,9 @@ if(!$con) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="../css/styles.css">
     <title>External Volunteer Sign Up Page</title>
+    <!-- font -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet">
     <!-- Bootstrap-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -116,7 +119,7 @@ if(!$con) {
 echo "heree";
     if(empty($username_err) && empty($password_err)){
         mysqli_query($con, "INSERT INTO person VALUES ('$username', '$password', '$fName', '$mInit', '$lName', '$bday', '$gender', '$pronouns', '0', '0')")  or die ( mysql_error() );
-        
+
         if($_POST['typeEx'] == 'pet'){
             mysqli_query($con, "INSERT INTO externalvolunteer VALUES ('$username', 'Pet Visitation', '$company' , '1', '0', '$petName', '$petType', NULL)")  or die ( mysql_error() );
         }
