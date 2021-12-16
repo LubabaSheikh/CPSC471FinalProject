@@ -1,3 +1,11 @@
+<?php
+$con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
+
+if(!$con) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +24,7 @@
 
 <section id="sign-in">
     <div class="container-fluid">
-        <form action="action_page.php" method="post">
+        <form name="LoginForm" action="" method="post">
             <h1>Sign In</h1>
             <p>Please enter your account details as specified below:</p>
             <hr>
@@ -27,10 +35,17 @@
             <label for="uname"><b>SIN Number</b></label>
             <input type="text" placeholder="Enter SIN Number" name="uname" required>
 
-            <label for="psw"><b>Enter Password</b></label>
+            <label for="psw"><b> Enter Password </b></label>
             <input type="password" placeholder="Enter Password" name="psw" required>
-
-            <button onclick="location.href='../CPSC471FinalProject/i-volunt/home.php'" type="submit">Login</button>
+            <label for="roles"> Sign in as:</label>
+                <select id="role" name="role">
+                  <option value="none" selected disabled hidden>Select a Role</option>
+                  <option value="volunteer">Internal Volunteer</option>
+                  <option value="potentialvolunteer">Potential Volunteer</option>
+                  <option value="externalvolunteer">External Volunteer</option>
+                  <option value="coordinator">Coordinator</option>
+                </select>
+            <input type="submit" name="btnSubmit" value="Log in">
             </div>
         </form>
     </div>
@@ -38,13 +53,77 @@
 </section>
 
 
-  <!-- Footer -->
-    <footer class="white-section" id="footer">
-        <br><br>
-        <div class="container-fluid">
-        <p>© Copyright 2021 Group 39 CPSC 471 </p>
-        </div>
-    </footer>
+    <?php
 
+
+     $checkType = 0;
+     /* checkType flag corresponds to:
+     0 - no one
+     1 - coordinator
+     2 - external volunteer
+     3 - internal volunteer
+     4 - potential volunteer
+     */
+     $query="SELECT * FROM person";
+     $result = mysqli_query($con, $query);
+     $idName = '';
+     $tableName = '';
+
+
+     if(isset($_POST["btnSubmit"])) {
+       $checkInPerson = True;
+       if($_POST['role'] != ''){
+           if($_POST['role'] == 'volunteer'){
+               $idName = 'v_id';
+               $tableName = 'volunteer';
+           }
+           if($_POST['role'] == 'coordinator'){
+               $idName = 'c_id';
+               $tableName = 'coordinator';
+           }
+           if($_POST['role'] == 'potentialvolunteer'){
+               $idName = 'pv_id';
+               $tableName = 'potentialvolunteer';
+           }
+           if($_POST['role'] == 'externalvolunteer'){
+               $idName = 'ev_id';
+               $tableName = 'externalvolunteer';
+           }
+       }
+       while($person=mysqli_fetch_assoc($result)) {
+         if($person['SIN'] == $_POST['uname'] && $person['password'] == $_POST['psw']) {
+           $rolequery = "SELECT * FROM " . $tableName . " WHERE " . $idName . " = " . $person['SIN'];
+           $checkInPerson == False;
+           $roleResult = mysqli_query($con, $rolequery);
+               while ($row = mysqli_fetch_assoc($roleResult)) {
+                   $checkInPerson == False;
+                   if($_POST['role'] == 'volunteer'){
+                       header('Location: i-volunt/home.php');
+                   }
+                   if($_POST['role'] == 'coordinator'){
+                       header('Location: coordinator/home.php');
+                   }
+                   if($_POST['role'] == 'potentialvolunteer'){
+                       header('Location: p-volunt/home.php');
+                   }
+                   if($_POST['role'] == 'externalvolunteer'){
+                       header('Location: e-volunt/home.php');
+                   }
+               }
+         }
+      }
+
+     }
+
+     ?>
+
+     <!-- Footer -->
+       <footer class="white-section" id="footer">
+           <br><br>
+           <div class="container-fluid">
+           <p>© Copyright 2021 Group 39 CPSC 471 </p>
+           </div>
+       </footer>
 
 </body>
+<html>
