@@ -4,6 +4,7 @@ session_start();
 
 $volSIN = $_SESSION['volsin'];
 $role = $_SESSION['role'];
+$accountSIN = $_SESSION['accountSin'];
 $con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
 if(!$con) {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
@@ -61,39 +62,39 @@ if($role != ''){
       $bday = $person['BDate'];
       $equip = $person['Equipment'];
       $roleResult = mysqli_query($con, $rolequery);
-          while ($row = mysqli_fetch_assoc($roleResult)) {
-              if($role == 'volunteer'){
-                  $startDate = $row['start_date'];
-                  $trainingLevel = $row['training_year'];
+      while ($row = mysqli_fetch_assoc($roleResult)) {
+          if($role == 'volunteer'){
+              $startDate = $row['start_date'];
+              $trainingLevel = $row['training_year'];
+          }
+          if($role == 'potentialvolunteer'){
+              $referal = $row['referral'];
+          }
+          if($role == 'externalvolunteer'){
+              $company = $row['affiliated_company'] . " : " . $row['specialty']; // type plus company?
+              if($row['pet_visit_flag'] == 1){
+                  $petName = $row['pet_name'];
+                  $petType = $row['pet_type'];
               }
-              if($role == 'potentialvolunteer'){
-                  $referal = $row['referral'];
-              }
-              if($role == 'externalvolunteer'){
-                  $company = $row['affiliated_company'] . " : " . $row['specialty']; // type plus company?
-                  if($row['pet_visit_flag'] == 1){
-                      $petName = $row['pet_name'];
-                      $petType = $row['pet_type'];
-                  }
-                  if($row['spirit_flag'] == 1){
-                      $spirit = $row['faith'];
-                  }
+              if($row['spirit_flag'] == 1){
+                  $spirit = $row['faith'];
               }
           }
-      $covidquery = "SELECT * FROM covidstatus WHERE person_id = " . $person['SIN'];
+      }
+      $covidquery = "SELECT * FROM covidstatus WHERE person_id = " . $volSIN;
       $covidResult = mysqli_query($con, $covidquery);
-          while ($vac = mysqli_fetch_assoc($covidResult)) {
-              $covidstat = $vac['vaccine_status'];
-              $vaccName = $vac['vaccine_name'];
-              $vaccDate = $vac['date'];
-          }
-      $equipquery = "SELECT * FROM equipment WHERE e_id = " . $person['equipment'];
+      while ($vac = mysqli_fetch_assoc($covidResult)) {
+          $covidstat = $vac['vaccine_status'];
+          $vaccName = $vac['vaccine_name'];
+          $vaccDate = $vac['date'];
+      }
+      $equipquery = "SELECT * FROM equipment WHERE e_id = " . $equip;
       $equipResult = mysqli_query($con, $equipquery);
-          while ($equip = mysqli_fetch_assoc($equipResult)) {
-              $vest = $equip['vest'];
-              $mask = $equip['mask'];
-              $card = $equip['keycard'];
-          }
+      while ($equipRow = mysqli_fetch_assoc($equipResult)) {
+          $vest = (int)$equipRow['vest'];
+          $mask = (int)$equipRow['mask'];
+          $card = (int)$equipRow['keycard'];
+      }
     }
  }
 
@@ -179,69 +180,200 @@ if($role != ''){
 
 <section id="sign-up">
     <div class="row">
-      <div class="col-sm-6">
+      <form name="changeTrain" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Change Training Level</h5>
             <p class="card-text">Update the volunteer's training level:</p>
             <label for="training"><b>Training Level</b></label>
             <input type="text" placeholder="highest level" name="training" required>
-            <a href="#" class="btn btn-warning">Submit</a>
+            <input type="submit" name="trainBTN" value="Submit"  class="btn btn-warning" >
           </div>
         </div>
-      </div>
+    </form>
       <br>
-      <div class="col-sm-6">
+      <form name="giveReward" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Give Reward</h5>
             <p class="card-text">Enter a reward for this volunteer:</p>
             <label for="reward"><b>Reward</b></label>
             <input type="text" placeholder="brithday gift" name="reward" required>
-            <a href="#" class="btn btn-warning">Submit</a>
+            <input type="submit" name="rewardBTN" value="Submit"  class="btn btn-warning" >
           </div>
         </div>
-      </div>
+    </form>
       <br>
-      <div class="col-sm-6">
+      <form name="changeEquip" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Change Volunteer Equipment</h5>
-            <p class="card-text">Update the volunteer's equipment:</p>
-            <label for="equip"><b>Equipment</b></label>
-            <input type="text" placeholder="mask" name="equip" required>
-            <a href="#" class="btn btn-warning">Submit</a>
+            <p class="card-text">Please select which equipment this volunteer currently owns:</p>
+            <fieldset>
+                <input type="checkbox" name="maskBTN" id="track" value="Mask" /><label for="Mask"> A Mask</label><br/>
+                <input type="checkbox" name="vestBTN" id="event" value="Vest"  /><label for="Vest"> A Vest</label><br/>
+                <input type="checkbox" name="cardBTN" id="message" value="Key Card" /><label for="Key Card"> A Key Card</label><br/>
+            </fieldset>
+            <input type="submit" name="equipBTN" value="Submit"  class="btn btn-warning" >
           </div>
         </div>
-      </div>
+    </form>
       <br>
-      <div class="col-sm-6">
+      <form name="udpateCovid" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Update Covid Status</h5>
             <p class="card-text">If the volunteer has taken their covid vaccines, please update here</p>
-            <label for="covid"><b>Covid Status</b></label>
-            <input type="text" placeholder="2 doses" name="covid" required>
-            <a href="#" class="btn btn-warning">Submit</a>
+            <label for="covid"><b>Covid Vaccine Name</b></label>
+            <input type="text" placeholder="pfizer" name="covid" required>
+            <input type="submit" name="covidBTN" value="Submit"  class="btn btn-warning" >
           </div>
         </div>
-      </div>
+    </form>
       <br>
-      <div class="col-sm-6">
+      <form name="changePark" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Change Parking</h5>
-            <p class="card-text">Update the volunteer's parking spot:</p>
-            <label for="park"><b>Parking Spot</b></label>
-            <input type="text" placeholder="B04" name="park" required>
-            <a href="#" class="btn btn-warning">Submit</a>
+            <p class="card-text">Give a volunteer, who does not have parking, a spot OR update their existing parking spot:</p>
+            <label for="parkNum"><b>Spot #</b></label>
+            <input type="text" placeholder="104" name="parkNum" required>
+            <label for="parkLoc"><b>Location</b></label>
+            <input type="text" placeholder="Women's Clinic" name="parkLoc" required>
+            <input type="submit" name="parkBTN" value="Submit" class="btn btn-warning" >
           </div>
         </div>
-      </div>
+    </form>
       <br>
+    <form name="changePark" action="" method="post" class="col-sm-6">
+        <a href="home.php" class="btn btn-success btn-lg" role="button"> </i> Back </a>
+    </form>
 
     <br><br><br>
 </section>
+
+
+
+<?php
+
+ if(isset($_POST["trainBTN"])) {
+     if($role == 'volunteer'){
+         if(is_numeric($_POST['training'])){
+             $tquery = "UPDATE volunteer SET training_level = ". $_POST['training'] . " WHERE v_id = " . $sin;
+             $tResult = mysqli_query($con, $tquery);
+         }
+     }
+     else if(!($role == 'volunteer')){
+         echo '<script>alert("This volunteer has not been trained by the hospital, try updating an internal volunteer.")</script>';
+     }
+     else{
+         echo '<script>alert("Enter training level as a number")</script>';
+     }
+ }
+
+ if(isset($_POST["rewardBTN"])) {
+     if(!($role == 'volunteer')){
+         echo '<script>alert("This volunteer cannot receive a reward because they are not an internal volunteer.")</script>';
+     }
+     if($_POST['reward'] != ''){
+         $date = date('Y/m/d');
+         $comment = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['reward']);
+         mysqli_query($con, "INSERT INTO rewards VALUES (NULL, '$volSIN', '$accountSIN', '$comment', 5, '$date', '')")  or die ( mysql_error() );
+     }
+     else{
+         echo '<script>alert("Enter a reward message.")</script>';
+     }
+ }
+
+ if(isset($_POST["equipBTN"])) {
+     if(isset($_POST['maskBTN']) and isset($_POST['vestBTN']) and isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 1, vest = 1, keycard = 1 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+     if(!isset($_POST['maskBTN']) and !isset($_POST['vestBTN']) and !isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 0, vest = 0, keycard = 0 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+     if(!isset($_POST['maskBTN']) and isset($_POST['vestBTN']) and isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 0, vest = 1, keycard = 1 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+     if(isset($_POST['maskBTN']) and !isset($_POST['vestBTN']) and isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 1, vest = 0, keycard = 1 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+     if(isset($_POST['maskBTN']) and isset($_POST['vestBTN']) and !isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 1, vest = 1, keycard = 0 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+     if(!isset($_POST['maskBTN']) and !isset($_POST['vestBTN']) and isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 0, vest = 0, keycard = 1 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+     if(isset($_POST['maskBTN']) and !isset($_POST['vestBTN']) and !isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 1, vest = 0, keycard = 0 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+     if(!isset($_POST['maskBTN']) and isset($_POST['vestBTN']) and !isset($_POST['cardBTN'])){
+         $equery = "UPDATE equipment SET mask = 0, vest = 1, keycard = 0 WHERE e_id = " . $equip;
+         $eResult = mysqli_query($con, $equery);
+     }
+ }
+
+ if(isset($_POST["parkBTN"])) {
+     if($_POST['parkLoc'] != ''){
+         $query = "SELECT * FROM parking WHERE p_id = " . $sin;
+         $checkExisting= mysqli_prepare($con,$query);
+         mysqli_stmt_execute($checkExisting);
+         $result = mysqli_stmt_get_result($checkExisting);
+         if (mysqli_num_rows($result)==0){
+             if(is_numeric($_POST['parkNum'])){
+                 $date = date('Y/m/d');
+                 $parkingNumber = $_POST['parkNum'];
+                 $loc = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['parkLoc']);
+                 mysqli_query($con, "INSERT INTO parking VALUES ('$volSIN', '$parkingNumber', NULL, '$loc', '$date')")  or die ( mysql_error() );
+             }
+             else{
+                 echo '<script>alert("Parking spot must be a number.")</script>';
+             }
+         }
+         else{
+             if(is_numeric($_POST['parkNum'])){
+                 $loc = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST["parkLoc"]);
+                 $pquery = "UPDATE parking SET location_id = ". $_POST['parkNum'] . ", building = '$loc' WHERE p_id = " . $sin;
+                 $pResult = mysqli_query($con, ptquery);
+             }
+             else{
+                 echo '<script>alert("Parking spot must be a number.")</script>';
+             }
+         }
+     }
+     else{
+         echo '<script>alert("Parking location must be provided.")</script>';
+     }
+ }
+
+ if(isset($_POST["covidBTN"])) {
+     $query = "SELECT * FROM covidstatus WHERE person_id = " . $sin;
+     $checkExisting= mysqli_prepare($con,$query);
+     mysqli_stmt_execute($checkExisting);
+     $result = mysqli_stmt_get_result($checkExisting);
+     if (mysqli_num_rows($result)==0){
+         $date = date('Y/m/d');
+         $comment = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['covid']);
+         mysqli_query($con, "INSERT INTO covidstatus VALUES ('$volSIN', '$comment', 1, '$date')")  or die ( mysql_error() );
+     }
+     else{
+         $vacdate = date('Y/m/d');
+         $comment = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['covid']);
+         $tquery = "UPDATE covidstatus SET vaccine_name = '$comment', date = '$vacdate' WHERE person_id = " . $sin;
+         $tResult = mysqli_query($con, $tquery);
+     }
+ }
+ mysqli_close($link);
+ ?>
+
+
 
   <!-- Footer -->
     <footer class="white-section" id="footer">

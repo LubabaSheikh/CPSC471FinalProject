@@ -1,4 +1,8 @@
 <?php
+
+session_start();
+$_SESSION['accountSin'] = (int)$_POST['uname'];
+
 $con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
 
 if(!$con) {
@@ -102,15 +106,19 @@ if(!$con) {
                    $checkInPerson == False;
                    if($_POST['role'] == 'volunteer'){
                        header('Location: i-volunt/home.php');
+                       exit();
                    }
                    if($_POST['role'] == 'coordinator'){
                        header('Location: coordinator/home.php');
+                       exit();
                    }
                    if($_POST['role'] == 'potentialvolunteer'){
                        header('Location: p-volunt/home.php');
+                       exit();
                    }
                    if($_POST['role'] == 'externalvolunteer'){
                        header('Location: e-volunt/home.php');
+                       exit();
                    }
                }
          }
