@@ -93,13 +93,13 @@ if(!$con) {
                </div>
             </form>
              <br>
-             <form name="makeNewShift" action="" method="post" class="col-sm-12">
+             <form name="makeNewSem" action="" method="post" class="col-sm-12">
                  <div class="card">
                    <div class="card-body">
                      <h5 class="card-title">Submit A New Seminar:</h5>
                      <p class="card-text">Enter the name, date, and time of this new seminar.</p>
                      <label for="semName"><b>Name</b></label>
-                     <input type="text" placeholder="Emergency" name="semName" required>
+                     <input type="text" placeholder="Leading spiritual healing during devastating times" name="semName" required>
                      <label for="semDate"><b>Date</b></label>
                      <input type="text" placeholder="MM/DD/YYYY" name="semDate" required>
                      <form method="post">
@@ -132,91 +132,71 @@ if(!$con) {
     // Validate ID of seminar
     if(is_numeric($_POST['semID'])){
         //unset($error);
-        $assignVolSIN = $_POST['volsin'];
-        $assignShiftID = $_POST['shiftID'];
-        $findVolquery = "SELECT * FROM volunteer WHERE v_id = " . $assignVolSIN;
-        $findVolResult = mysqli_query($con, $findVolquery);
+        $newSemID = $_POST['semID'];
+        $findSemquery = "SELECT * FROM seminar WHERE seminar_id = " . $newSemID;
+        $findSemResult = mysqli_query($con, $findSemquery);
 
-        $voluntNotFound = true;
-        while ($found = mysqli_fetch_assoc($findVolResult)) {
-            // check shift ID
-            $voluntNotFound = false;
-            $shiftquery = "SELECT * FROM shift WHERE shift_id = " . $assignShiftID;
-            $checkShift = mysqli_prepare($con,$shiftquery);
-            mysqli_stmt_execute($checkShift);
-            $getShiftResult = mysqli_stmt_get_result($checkShift);
-            if (mysqli_num_rows($getShiftResult) !=0) {
-                while ($enter = mysqli_fetch_assoc($getShiftResult)) {
-                    // if it doesnt already exist
-                    $findPrevious = "SELECT * FROM assign WHERE s_id = " . $assignShiftID ." and volunteer_id = ". $assignVolSIN;
-                    $checkPrevious = mysqli_prepare($con,$findPrevious);
-                    mysqli_stmt_execute($checkPrevious);
-                    $previousResult = mysqli_stmt_get_result($checkPrevious);
-                    if(mysqli_num_rows($previousResult) ==0){
-                        mysqli_query($con, "INSERT INTO assign VALUES ('$assignShiftID', '$assignVolSIN', '$accountSIN', NULL)")  or die ( mysql_error() );
-                    }
-                    else{
-                        echo '<script>alert("This volunteer has already been assigned to this shift.")</script>';
-                    }
-                }
+        $semNotFound = true;
+        while ($found = mysqli_fetch_assoc($findSemResult)) {
+            $semNotFound = false;
+            $semName = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['newName']);
+            $semdate = date('Y-m-d',strtotime($_POST['newDate']));
+             if($_POST['newtime'] == 'am'){
+                 $semquery = "UPDATE seminar SET name = '$semName', date = '$semdate', time = '10:00:00' WHERE seminar_id = $accountSIN" . $newSemID;
+                 $semResult = mysqli_query($con, $semquery);
              }
-             else {
-                echo '<script>alert("This shift does not exist. Please try again.")</script>';
+             else if($_POST['newtime'] == 'pm'){
+                 $semquery = "UPDATE seminar SET name = '$semName', date = '$semdate', time = '17:00:00' WHERE seminar_id = $accountSIN" . $newSemID;
+                 $semResult = mysqli_query($con, $semquery);
              }
         }
-        if($voluntNotFound){
-            echo '<script>alert("This volunteer does not exist or they are not internal. Please try again.")</script>';
+        if($semNotFound){
+            echo '<script>alert("This seminar does not exist in the system. Please try again.")</script>';
         }
     }
     else{
-        echo '<script>alert("Please enter numbers only for shift and volunteer ID.")</script>';
+        echo '<script>alert("Please enter numbers only for seminar ID.")</script>';
     }
 }
 
- if(isset($_POST["newShiftBTN"])) {
-     $place = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['shiftPlace']);
-     $idQuery = "SELECT MAX(shift_id) FROM shift";
+ if(isset($_POST["newSemBTN"])) {
+     $name = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['semName']);
+     $idQuery = "SELECT MAX(seminar_id) FROM seminar";
      $result = mysqli_query($con, $idQuery);
      $lastID = 0;
-     $shiftdate = date('Y-m-d',strtotime($_POST['shiftDate']));
+     $semdate = date('Y-m-d',strtotime($_POST['semDate']));
 
      while($row = mysqli_fetch_array($result)){
-        $lastID =  $row['MAX(shift_id)'] + 1;
+        $lastID =  $row['MAX(seminar_id)'] + 1;
      }
 
-     if(is_numeric($_POST['shiftNum'])){
-         $shiftnum = $_POST['shiftNum'];
-         if($_POST['time'] == 'am'){
-             $findExisting = "SELECT * FROM shift WHERE date = '$shiftdate' and time = '10:00:00' and place = '$place'";
-             $checkExisting = mysqli_prepare($con,$findExisting);
-             mysqli_stmt_execute($checkExisting);
-             $getExisting = mysqli_stmt_get_result($checkExisting);
-             $enter = true;
-             while ($find = mysqli_fetch_assoc($getExisting)) {
-                 $enter = false;
-                 echo '<script>alert("This shift already exists in our system")</script>';
-             }
-             if($enter == true){
-                 mysqli_query($con, "INSERT INTO shift VALUES ('$lastID', '$shiftdate', '10:00:00', '$place', '$shiftnum')")  or die ( mysql_error() );
-             }
+     if($_POST['time'] == 'am'){
+         $findExisting = "SELECT * FROM seminar WHERE date = '$semdate' and time = '10:00:00'";
+         $checkExisting = mysqli_prepare($con,$findExisting);
+         mysqli_stmt_execute($checkExisting);
+         $getExisting = mysqli_stmt_get_result($checkExisting);
+         $enter = true;
+         while ($find = mysqli_fetch_assoc($getExisting)) {
+             $enter = false;
+             echo '<script>alert("Another seminar is already set at this time.")</script>';
          }
-         else if($_POST['time'] == 'pm'){
-             $findExisting = "SELECT * FROM shift WHERE date = '$shiftdate' and time = '17:00:00' and place = '$place'";
-             $checkExisting = mysqli_prepare($con,$findExisting);
-             mysqli_stmt_execute($checkExisting);
-             $getExisting = mysqli_stmt_get_result($checkExisting);
-             $enter = true;
-             while ($find = mysqli_fetch_assoc($getExisting)) {
-                 $enter = false;
-                 echo '<script>alert("This shift already exists in our system")</script>';
-             }
-             if($enter == true){
-                 mysqli_query($con, "INSERT INTO shift VALUES ('$lastID', '$shiftdate', '17:00:00', '$place', '$shiftnum')")  or die ( mysql_error() );
-             }
+         if($enter == true){
+             mysqli_query($con, "INSERT INTO seminar VALUES ('$lastID','$name','$semdate','10:00:00','$accountSIN')")  or die ( mysql_error() );
          }
      }
-     else{
-         echo '<script>alert("Number of requested volunteers must be numeric.")</script>';
+     else if($_POST['time'] == 'pm'){
+         $findExisting = "SELECT * FROM seminar WHERE date = '$semdate' and time = '17:00:00' and place = '$place'";
+         $checkExisting = mysqli_prepare($con,$findExisting);
+         mysqli_stmt_execute($checkExisting);
+         $getExisting = mysqli_stmt_get_result($checkExisting);
+         $enter = true;
+         while ($find = mysqli_fetch_assoc($getExisting)) {
+             $enter = false;
+             echo '<script>alert("Another seminar is already set at this time.")</script>';
+         }
+         if($enter == true){
+             mysqli_query($con, "INSERT INTO seminar VALUES ('$lastID','$name','$semdate','17:00:00','$accountSIN')")  or die ( mysql_error() );
+         }
      }
 
  }
