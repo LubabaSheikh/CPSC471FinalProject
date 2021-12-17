@@ -36,6 +36,8 @@ $referal = 'N/A';
 $startDate = 'N/A';
 $trainingLevel = 'N/A';
 
+$styleStr = "";
+
 if($role != ''){
   if($role == 'volunteer'){
       $idName = 'v_id';
@@ -50,6 +52,7 @@ if($role != ''){
       $tableName = 'externalvolunteer';
   }
 
+  $foundFlag = 0;
   while($person=mysqli_fetch_assoc($result)) {
     if($person['SIN'] == $volSIN) {
       $rolequery = "SELECT * FROM " . $tableName . " WHERE " . $idName . " = " . $person['SIN'];
@@ -62,7 +65,10 @@ if($role != ''){
       $bday = $person['BDate'];
       $equip = $person['Equipment'];
       $roleResult = mysqli_query($con, $rolequery);
+
+
       while ($row = mysqli_fetch_assoc($roleResult)) {
+          $foundFlag = 1;
           if($role == 'volunteer'){
               $startDate = $row['start_date'];
               $trainingLevel = $row['training_year'];
@@ -97,6 +103,10 @@ if($role != ''){
       }
     }
  }
+ if($foundFlag == 0){
+     $styleSTR = 'style="background-color:#d9534f"';
+     echo '<script>alert("No volunteer found, please go back and try again.")</script>';
+ }
 
 }
 
@@ -123,7 +133,7 @@ if($role != ''){
 <p>here is the volunteer you are looking for:</p>
 <hr>
 
-    <table class="table table-hover">
+    <table class="table table-hover" <?php echo $styleSTR; ?> >
       <thead>
         <tr>
           <th scope="col"></th>
@@ -262,12 +272,12 @@ if($role != ''){
              $tquery = "UPDATE volunteer SET training_level = ". $_POST['training'] . " WHERE v_id = " . $sin;
              $tResult = mysqli_query($con, $tquery);
          }
+         else{
+             echo '<script>alert("Enter training level as a number")</script>';
+         }
      }
      else if(!($role == 'volunteer')){
          echo '<script>alert("This volunteer has not been trained by the hospital, try updating an internal volunteer.")</script>';
-     }
-     else{
-         echo '<script>alert("Enter training level as a number")</script>';
      }
  }
 

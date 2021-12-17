@@ -6,7 +6,6 @@ body {
 }
 
 .navbar {
-  backgroud-color:#EF45A8;
   padding: 0 0 4.5rem;
 }
 .nav-item {
@@ -17,7 +16,8 @@ body {
 }
 
 .col-lg-6{
-    position: center;
+    position: relative;
+    color: #eed799;
 }
 
 .white-section {
@@ -48,7 +48,7 @@ h1 {
     font-size: 3rem;
     line-height: 1.5;
     font-weight: 900;
-    color: #eed799;
+    color: #d9534f;
 }
 
 @media (max-width: 1200px) {
