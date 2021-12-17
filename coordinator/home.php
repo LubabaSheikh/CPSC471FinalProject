@@ -60,7 +60,7 @@ if(!$con) {
           <div class="card-body">
             <h5 class="card-title">Manage Your Shifts!</h5>
             <p class="card-text">As a coordinator, you may view upcoming shifts and assign volunteers to them.</p>
-            <a href="#" class="btn btn-success">View Shifts</a>
+            <a href="../shifts.php" class="btn btn-success">View Shifts</a>
             <a href="#" class="btn btn-warning">Assign Shifts to a Volunteer</a>
         </div>
     </form>
@@ -71,7 +71,7 @@ if(!$con) {
           <div class="card-body">
             <h5 class="card-title">Manage Your Seminars!</h5>
             <p class="card-text">Here, you may view your seminars and edit them as well.</p>
-            <a href="#" class="btn btn-success">View Seminars</a>
+            <a href="../seminars.php" class="btn btn-success">View Seminars</a>
             <br>
             <label for="editSem"><b>Seminar ID To Edit</b></label>
             <input type="text" placeholder="012345" name="editSem" required>

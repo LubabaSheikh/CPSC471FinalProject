@@ -26,8 +26,8 @@
           <div class="card-body">
             <h5 class="card-title">Manage Your Shifts and Seminars!</h5>
             <p class="card-text">As a volunteer, you may view upcoming shifts or seminars and assign/register yourself to them.</p>
-            <a href="#" class="btn btn-success">View Shifts</a>
-            <a href="#" class="btn btn-success">View Seminars</a>
+            <a href="../shifts.php" class="btn btn-success">View Shifts</a>
+            <a href="../seminars.php" class="btn btn-success">View Seminars</a>
             <a href="#" class="btn btn-warning">Sign Up For A Shift</a>
             <a href="#" class="btn btn-warning">Sign Up For A Seminar</a>
           </div>
