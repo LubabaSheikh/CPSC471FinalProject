@@ -69,7 +69,8 @@ if(!$con) {
 <?php
 
  if(isset($_POST["referenceBTN"])) {
-     $rquery = "UPDATE potentialvolunteer SET referral = ". $_POST['email'] . " WHERE v_id = " . $accountSIN;
+     $newEmail = $_POST['email'];
+     $rquery = "UPDATE potentialvolunteer SET referral = '$newEmail' WHERE pv_id = " . $accountSIN;
      $rResult = mysqli_query($con, $rquery);
  }
 
