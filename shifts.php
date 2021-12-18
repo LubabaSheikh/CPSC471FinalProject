@@ -17,7 +17,7 @@ if(!$con) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <title>Upcoming Shifts</title>
     <!-- font -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>

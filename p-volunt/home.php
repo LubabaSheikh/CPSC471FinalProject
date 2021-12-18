@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+$accountSIN = $_SESSION['accountSin'];
+$con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
+
+if(!$con) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,38 +28,24 @@
 
 <body>
 <h1>Prospective Volunteer Home Landing Page</h1>
-<p>Please finish your application using the following utilities. In application, you are required to submit at least 2 references and a background check.</p>
+<p>Please finish your application using the following utilities. In application, you are required to submit one reference email and a background check.</p>
 <hr>
 
 <section id="sign-up">
     <div class="row">
-      <div class="col-sm-6">
+      <form name="reference" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Add New Reference</h5>
-            <p class="card-text">Please add the full name and email your referee.</p>
-            <label for="fullname"><b>Full Name</b></label>
-            <input type="text" placeholder="Referee" name="fullname" required>
+            <h5 class="card-title">Add or Update a Reference</h5>
+            <p class="card-text">Please submit the email of your referee to our system. You may edit the email after submission.</p>
             <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="@email.com" name="email" required>
-            <a href="#" class="btn btn-warning">Submit</a>
+            <input type="text" placeholder="abc@email.com" name="email" required>
+            <input type="submit" name="referenceBTN" value="De-Register" class="btn btn-warning" >
           </div>
         </div>
-      </div>
+      </form>
       <br>
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Remove A Previously-Submitted Reference</h5>
-            <p class="card-text">Enter the email of the referee you are choosing to remove from your applciation.</p>
-            <label for="email"><b>Email</b></label>
-            <input type="text" placeholder="@email.com" name="email" required>
-            <a href="#" class="btn btn-warning">Submit</a>
-          </div>
-        </div>
-      </div>
-      <br>
-      <div class="col-sm-6">
+      <form name="bcheck" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Add A Background Check Status</h5>
@@ -55,15 +53,43 @@
                 You must bring this document with you at your first interview.
                 Please only change the status once you have received a completed background check.</p>
             <label for="bcStatus"><b>Background Check Status</b></label>
-            <input type="text" placeholder="in progress" name="bcStatus" required>
-            <a href="#" class="btn btn-warning">Submit</a>
+            <div class="dropdown show">
+              <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                pick a status
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="#">In Progress</a>
+                <a class="dropdown-item" href="#">Completed</a>
+              </div>
+            </div>
+            <input type="submit" name="bcheckBTN" value="Update" class="btn btn-success" >
           </div>
         </div>
-      </div>
+      </form>
     </div>
     <br><br><br>
 </section>
 
+<?php
+
+ if(isset($_POST["referenceBTN"])) {
+     $rquery = "UPDATE potentialvolunteer SET referral = ". $_POST['email'] . " WHERE v_id = " . $accountSIN;
+     $rResult = mysqli_query($con, $rquery);
+ }
+
+ if(isset($_POST["bcheckBTN"])) {
+     if(1){
+         $rquery = "UPDATE potentialvolunteer SET backgroundCheckStatus = 1 WHERE v_id = " . $accountSIN;
+         $rResult = mysqli_query($con, $rquery);
+     }
+     else{
+         $rquery = "UPDATE potentialvolunteer SET backgroundCheckStatus = 0 WHERE v_id = " . $accountSIN;
+         $rResult = mysqli_query($con, $rquery);
+     }
+ }
+
+ mysqli_close($link);
+?>
 
   <!-- Footer -->
     <footer class="white-section" id="footer">
