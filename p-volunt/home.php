@@ -40,7 +40,7 @@ if(!$con) {
             <p class="card-text">Please submit the email of your referee to our system. You may edit the email after submission.</p>
             <label for="email"><b>Email</b></label>
             <input type="text" placeholder="abc@email.com" name="email" required>
-            <input type="submit" name="referenceBTN" value="De-Register" class="btn btn-warning" >
+            <input type="submit" name="referenceBTN" value="Update" class="btn btn-warning" >
           </div>
         </div>
       </form>
