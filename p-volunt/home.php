@@ -52,16 +52,12 @@ if(!$con) {
             <p class="card-text">As an applicant, you are responsible for acquiring your own background check.
                 You must bring this document with you at your first interview.
                 Please only change the status once you have received a completed background check.</p>
-            <label for="bcStatus"><b>Background Check Status</b></label>
-            <div class="dropdown show">
-              <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                pick a status
-              </a>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="#">In Progress</a>
-                <a class="dropdown-item" href="#">Completed</a>
-              </div>
-            </div>
+            <label for="bcStatus"><b>Background Check: </b></label>
+                <select id="backStatus" name="role">
+                  <option value="none" selected disabled hidden>select a status</option>
+                  <option value="inProgress">In Progress</option>
+                  <option value="comP">Completed</option>
+                </select>
             <input type="submit" name="bcheckBTN" value="Update" class="btn btn-success" >
           </div>
         </div>
@@ -78,12 +74,12 @@ if(!$con) {
  }
 
  if(isset($_POST["bcheckBTN"])) {
-     if(1){
-         $rquery = "UPDATE potentialvolunteer SET backgroundCheckStatus = 1 WHERE v_id = " . $accountSIN;
+     if($_POST['role'] == 'inProgress'){
+         $rquery = "UPDATE potentialvolunteer SET backgroundCheckStatus = 0 WHERE pv_id = " . $accountSIN;
          $rResult = mysqli_query($con, $rquery);
      }
      else{
-         $rquery = "UPDATE potentialvolunteer SET backgroundCheckStatus = 0 WHERE v_id = " . $accountSIN;
+         $rquery = "UPDATE potentialvolunteer SET backgroundCheckStatus = 1 WHERE pv_id = " . $accountSIN;
          $rResult = mysqli_query($con, $rquery);
      }
  }
