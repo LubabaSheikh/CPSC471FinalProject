@@ -63,6 +63,7 @@ if(!$con) {
             <a href="assignshifts.php" class="btn btn-success">View Shifts and Assign to a Volunteer</a>
         </div>
     </form>
+    <br>
       </div>
       <br>
       <form name="manageSemForm" action="" method="post" class="col-sm-6">

@@ -2,7 +2,7 @@
 
 session_start();
 $_SESSION['accountSin'] = (int)$_POST['uname'];
-
+$_SESSION['accountRole'] = $_POST['role'];
 $con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
 
 if(!$con) {

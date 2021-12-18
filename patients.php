@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-$accountSIN = $_SESSION['accountSin'];
 $con = mysqli_connect("localhost", "root", "root", "hospitalvolunteersystem");
 
 if(!$con) {
@@ -17,7 +15,7 @@ if(!$con) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/styles.css">
-    <title>Upcoming Seminars</title>
+    <title>Patients</title>
     <!-- font -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet">
@@ -30,47 +28,47 @@ if(!$con) {
 
 <section id="sign-up">
     <div class="container-fluid">
-        <h1>Seminars Held at the Hospital</h1>
-        <p>here are all of the upcoming seminars that you may attend:</p>
+        <h1>Patients Visitations</h1>
+        <p>here are all the patients that have signed up for visitations:</p>
         <hr>
-            <table class="table table-hover">
+            <table class="table table-hover" style="background-color:#f5ffdc">
               <thead>
                 <tr>
                   <th scope="col"></th>
-                  <th scope="col">Seminar ID</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Time</th>
+                  <th scope="col">Full Name</th>
+                  <th scope="col">Gender and Pronouns</th>
+                  <th scope="col">Floor and Room</th>
+                  <th scope="col">Birth Date</th>
                 </tr>
               </thead>
               <tbody>
                   <?php
-                  $result = mysqli_query($con,"SELECT * FROM seminar");
+                  $result = mysqli_query($con,"SELECT * FROM patient");
 
                    while($row = mysqli_fetch_array($result))
                     {
 
                    ?>
                    <tr>
-                     <th scope="row">Seminar</th>
-                     <td><?php echo $row['seminar_id']; ?> </td>
-                     <td><?php echo $row['name']; ?> </td>
-                     <td><?php echo $row['date']; ?> </td>
-                     <td><?php echo $row['time']; ?> </td>
+                     <th scope="row">Patient</th>
+                     <td><?php echo $row['Fname']; ?> <?php echo $row['Lname']; ?></td>
+                     <td><?php echo $row['gender']; ?> || <?php echo $row['pronouns']; ?></td>
+                     <td><?php echo $row['floor']; ?> || <?php echo $row['room_number']; ?> </td>
+                     <td><?php echo $row['BDate']; ?> </td>
                    </tr>
                   <?php
                   }
 
-                  mysqli_close($con);
+                   mysqli_close($con);
                   ?>
 
               </tbody>
             </table>
-
-    <a href="javascript:history.back()" class="btn btn-success btn-lg" role="button"> </i> Back </a>
     </div>
-
-    <br><br><br>
+    <br>
+    <form name="holdBack" action="" method="post" class="col-sm-8">
+        <a href="javascript:history.back()" class="btn btn-success btn-lg" role="button"> </i> Back </a>
+    </form>
 </section>
 
   <!-- Footer -->

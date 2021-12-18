@@ -1,8 +1,7 @@
 
 body {
   text-align: center;
-  margin: 100px;
-  padding: 100px;
+  padding: 80px;
 }
 
 .navbar {
@@ -15,10 +14,13 @@ body {
     padding: 3% 15%;
 }
 
-.col-lg-6{
+
+
+.card-body{
     position: relative;
-    color: #eed799;
+    background-color: #f5ffdc;
 }
+
 
 .white-section {
   background-color: #fff;
