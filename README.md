@@ -12,3 +12,9 @@ The is a comprehensive database system for managing volunteers at the hospital. 
 1. Mac Apache MySql PHP (MAMP) server environment, or equivalent, to run the website on a local computer
 2. A running Apache and MySql Server
 3. A web browser to view and interact with the website
+4. May need to change the local host, username, and password to run queries
+
+> Project Stack
+>
+Website: HTML, CSS, PHP
+API Endpoints: Django, Postman
