@@ -15,6 +15,7 @@ The is a comprehensive database system for managing volunteers at the hospital. 
 2. A running Apache and MySql Server
 3. A web browser to view and interact with the website
 4. May need to change the local host, username, and password to run queries
+5. When all servers are running, source code is copied to the server document root, and appropriate changes have been made, the website can be viewed through: http://localhost:8888/CPSC471FinalProject/index.php
 
 > Project Stack
 >
