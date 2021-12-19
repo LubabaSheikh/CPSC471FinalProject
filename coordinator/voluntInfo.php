@@ -71,7 +71,7 @@ if($role != ''){
           $foundFlag = 1;
           if($role == 'volunteer'){
               $startDate = $row['start_date'];
-              $trainingLevel = $row['training_year'];
+              $trainingLevel = $row['training_level'];
           }
           if($role == 'potentialvolunteer'){
               $referal = $row['referral'];

@@ -35,6 +35,28 @@ if(!$con) {
 
 <section id="coor-home">
     <div class="row">
+
+      <br>
+      <form name="manageShiftForm" action="" method="post" class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Manage Your Shifts!</h5>
+            <p class="card-text">As a coordinator, you may view upcoming shifts and assign volunteers to them.</p>
+            <a href="assignshifts.php" class="btn btn-success">View Shifts and Assign to a Volunteer</a>
+        </div>
+        </div>
+    </form>
+    <br>
+    <form name="manageSemForm" action="" method="post" class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Manage Your Seminars!</h5>
+          <p class="card-text">Here, you may view your seminars and edit them as well.</p>
+          <a href="editseminars.php" class="btn btn-success">View Seminars and Edit</a>
+      </div>
+    </div>
+  </form>
+      <br>
       <form name="findVoluntForm" action="" method="post" class="col-sm-6">
         <div class="card">
           <div class="card-body">
@@ -54,27 +76,6 @@ if(!$con) {
           </div>
         </div>
     </form>
-      <br>
-      <form name="manageShiftForm" action="" method="post" class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Manage Your Shifts!</h5>
-            <p class="card-text">As a coordinator, you may view upcoming shifts and assign volunteers to them.</p>
-            <a href="assignshifts.php" class="btn btn-success">View Shifts and Assign to a Volunteer</a>
-        </div>
-    </form>
-    <br>
-      </div>
-      <br>
-      <form name="manageSemForm" action="" method="post" class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Manage Your Seminars!</h5>
-            <p class="card-text">Here, you may view your seminars and edit them as well.</p>
-            <a href="editseminars.php" class="btn btn-success">View Seminars and Edit</a>
-        </div>
-    </form>
-      </div>
     </div>
     <br><br><br>
 </section>

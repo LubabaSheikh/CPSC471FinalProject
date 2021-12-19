@@ -142,11 +142,11 @@ if(!$con) {
             $semName = preg_replace("/[^A-Za-z0-9 ]/", '', $_POST['newName']);
             $semdate = date('Y-m-d',strtotime($_POST['newDate']));
              if($_POST['newtime'] == 'am'){
-                 $semquery = "UPDATE seminar SET name = '$semName', date = '$semdate', time = '10:00:00' WHERE seminar_id = $accountSIN" . $newSemID;
+                 $semquery = "UPDATE seminar SET name = '$semName', date = '$semdate', time = '10:00:00' WHERE seminar_id = $newSemID";
                  $semResult = mysqli_query($con, $semquery);
              }
              else if($_POST['newtime'] == 'pm'){
-                 $semquery = "UPDATE seminar SET name = '$semName', date = '$semdate', time = '17:00:00' WHERE seminar_id = $accountSIN" . $newSemID;
+                 $semquery = "UPDATE seminar SET name = '$semName', date = '$semdate', time = '17:00:00' WHERE seminar_id = $newSemID";
                  $semResult = mysqli_query($con, $semquery);
              }
         }
